@@ -3,7 +3,7 @@ import sqlite3
 
 
 def get_db():
-    conn = sqlite3.connect('../database.sqlite')
+    conn = sqlite3.connect('./database.sqlite')
     return conn
 
 
@@ -115,6 +115,11 @@ def put_pessoa(cpf: str, first_name: str, middle_name: str, last_name: str, age:
     cpf = format_cpf(cpf)
     result = put_db('UPDATE people SET first_name=?, middle_name=?, last_name=?, age=?, conta=? WHERE cpf=?',
                     (first_name, middle_name, last_name, age, conta, cpf))
+    return result
+
+
+def get_pessoas():
+    result = query_db('Select * From people;')
     return result
 
 

@@ -1,66 +1,179 @@
-from tkinter import *
+import tkinter
+from tkinter import ttk
+from tkinter.ttk import Scrollbar
+
+from src.database import get_pessoas
+
+LARGEFONT = ("Verdana", 35)
 
 
-class Application:
-    def __init__(self, master=None):
-        self.fontePadrao = ("Arial", "10")
-        self.primeiroContainer = Frame(master)
-        self.primeiroContainer["pady"] = 10
-        self.primeiroContainer.pack()
+class TkinterApp(tkinter.Tk):
 
-        self.segundoContainer = Frame(master)
-        self.segundoContainer["padx"] = 20
-        self.segundoContainer.pack()
+    def __init__(self, *args, **kwargs):
+        tkinter.Tk.__init__(self, *args, **kwargs)
 
-        self.terceiroContainer = Frame(master)
-        self.terceiroContainer["padx"] = 20
-        self.terceiroContainer.pack()
+        container = tkinter.Frame(self)
+        container.pack(side="top", fill="both", expand=True)
 
-        self.quartoContainer = Frame(master)
-        self.quartoContainer["pady"] = 20
-        self.quartoContainer.pack()
+        container.grid_rowconfigure(0, weight=1)
+        container.grid_columnconfigure(0, weight=1)
 
-        self.titulo = Label(self.primeiroContainer, text="Dados do usuário")
-        self.titulo["font"] = ("Arial", "10", "bold")
-        self.titulo.pack()
+        self.frames = {}
 
-        self.nomeLabel = Label(self.segundoContainer, text="Nome", font=self.fontePadrao)
-        self.nomeLabel.pack(side=LEFT)
+        for f in (StartPage, Page1, Page2):
+            frame = f(container, self)
+            self.frames[f] = frame
+            frame.grid(row=0, column=0, sticky="nsew")
 
-        self.nome = Entry(self.segundoContainer)
-        self.nome["width"] = 30
-        self.nome["font"] = self.fontePadrao
-        self.nome.pack(side=LEFT)
+        self.show_frame(StartPage)
 
-        self.senhaLabel = Label(self.terceiroContainer, text="Senha", font=self.fontePadrao)
-        self.senhaLabel.pack(side=LEFT)
-
-        self.senha = Entry(self.terceiroContainer)
-        self.senha["width"] = 30
-        self.senha["font"] = self.fontePadrao
-        self.senha["show"] = "*"
-        self.senha.pack(side=LEFT)
-
-        self.autenticar = Button(self.quartoContainer)
-        self.autenticar["text"] = "Autenticar"
-        self.autenticar["font"] = ("Calibri", "8")
-        self.autenticar["width"] = 12
-        self.autenticar["command"] = self.verifica_senha
-        self.autenticar.pack()
-
-        self.mensagem = Label(self.quartoContainer, text="", font=self.fontePadrao)
-        self.mensagem.pack()
-
-    # Método verificar senha
-    def verifica_senha(self):
-        usuario = self.nome.get()
-        senha = self.senha.get()
-        if usuario == "usuariodevmedia" and senha == "dev":
-            self.mensagem["text"] = "Autenticado"
-        else:
-            self.mensagem["text"] = "Erro na autenticação"
+    def show_frame(self, cont):
+        frame = self.frames[cont]
+        frame.tkraise()
 
 
-root = Tk()
-Application(root)
-root.mainloop()
+class Page3:
+    pass
+
+
+class Page4:
+    pass
+
+
+class Page5:
+    pass
+
+
+class Page6:
+    pass
+
+
+class Page7:
+    pass
+
+
+class Page8:
+    pass
+
+
+class Page9:
+    pass
+
+
+class Page10:
+    pass
+
+
+class Page11:
+    pass
+
+
+class Page12:
+    pass
+
+
+class Page13:
+    pass
+
+
+class Page14:
+    pass
+
+
+class Page15:
+    pass
+
+
+class StartPage(tkinter.Frame):
+    def __init__(self, parent, controller):
+        tkinter.Frame.__init__(self, parent)
+
+        label = ttk.Label(self, text="Bem Vindo ao banco JV", font=LARGEFONT)
+        label.grid(row=0, column=2, padx=10, pady=10)
+
+        button1 = ttk.Button(self, text="Listar Pessoas", command=lambda: controller.show_frame(Page1))
+        button1.grid(row=1, column=1, padx=10, pady=10)
+
+        button2 = ttk.Button(self, text="Listar Contas", command=lambda: controller.show_frame(Page2))
+        button2.grid(row=1, column=2, padx=10, pady=10)
+
+        button3 = ttk.Button(self, text="Listar Funcionários", command=lambda: controller.show_frame(Page3))
+        button3.grid(row=1, column=3, padx=10, pady=10)
+
+        button4 = ttk.Button(self, text="Buscar conta", command=lambda: controller.show_frame(Page4))
+        button4.grid(row=2, column=1, padx=10, pady=10)
+
+        button5 = ttk.Button(self, text="Buscar pessoa", command=lambda: controller.show_frame(Page5))
+        button5.grid(row=2, column=2, padx=10, pady=10)
+
+        button6 = ttk.Button(self, text="Buscar Funcionários", command=lambda: controller.show_frame(Page6))
+        button6.grid(row=2, column=3, padx=10, pady=10)
+
+        button7 = ttk.Button(self, text="Inserir pessoa", command=lambda: controller.show_frame(Page7))
+        button7.grid(row=3, column=1, padx=10, pady=10)
+
+        button8 = ttk.Button(self, text="Inserir conta", command=lambda: controller.show_frame(Page8))
+        button8.grid(row=3, column=2, padx=10, pady=10)
+
+        button9 = ttk.Button(self, text="Inserir Funcionários", command=lambda: controller.show_frame(Page9))
+        button9.grid(row=3, column=3, padx=10, pady=10)
+
+        button10 = ttk.Button(self, text="Deletar pessoa", command=lambda: controller.show_frame(Page10))
+        button10.grid(row=4, column=1, padx=10, pady=10)
+
+        button11 = ttk.Button(self, text="Deletar conta", command=lambda: controller.show_frame(Page11))
+        button11.grid(row=4, column=2, padx=10, pady=10)
+
+        button12 = ttk.Button(self, text="Deletar Funcionários", command=lambda: controller.show_frame(Page12))
+        button12.grid(row=4, column=3, padx=10, pady=10)
+
+        button13 = ttk.Button(self, text="Editar pessoa", command=lambda: controller.show_frame(Page13))
+        button13.grid(row=5, column=1, padx=10, pady=10)
+
+        button14 = ttk.Button(self, text="Editar conta", command=lambda: controller.show_frame(Page14))
+        button14.grid(row=5, column=2, padx=10, pady=10)
+
+        button14 = ttk.Button(self, text="Editar Funcionários", command=lambda: controller.show_frame(Page15))
+        button14.grid(row=5, column=3, padx=10, pady=10)
+
+
+class Page1(tkinter.Frame):
+
+    def __init__(self, parent, controller):
+        tkinter.Frame.__init__(self, parent)
+
+        label = ttk.Label(self, text="Lista de pessoas", font=LARGEFONT)
+        label.grid(row=0, column=1, padx=10, pady=10)
+        
+        pessoas = get_pessoas()
+        root = tkinter.Tk()
+        scrollbar = Scrollbar()
+        scrollbar.pack(side="right", fill='y')
+
+        mylist = tkinter.Listbox(root, yscrollcommand=scrollbar.set)
+        for line in pessoas:
+            mylist.insert(line[0], line[1])
+
+        mylist.pack(side='left', fill="both")
+        scrollbar.config(command=mylist.yview)
+
+        button1 = ttk.Button(self, text="Voltar", command=lambda: controller.show_frame(StartPage))
+        button1.grid(row=1, column=1, padx=10, pady=10)
+
+
+class Page2(tkinter.Frame):
+    def __init__(self, parent, controller):
+        tkinter.Frame.__init__(self, parent)
+
+        label = ttk.Label(self, text="Page 2", font=LARGEFONT)
+        label.grid(row=0, column=4, padx=10, pady=10)
+
+        button1 = ttk.Button(self, text="Page 1", command=lambda: controller.show_frame(Page1))
+        button1.grid(row=1, column=1, padx=10, pady=10)
+
+        button2 = ttk.Button(self, text="Startpage", command=lambda: controller.show_frame(StartPage))
+        button2.grid(row=2, column=1, padx=10, pady=10)
+
+
+app = TkinterApp()
+app.mainloop()
