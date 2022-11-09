@@ -123,6 +123,16 @@ def get_pessoas():
     return result
 
 
+def get_contas():
+    result = query_db('Select * From conta;')
+    return result
+
+
+def get_funcionarios():
+    result = query_db('Select * From employee;')
+    return result
+
+
 def get_pessoa(cpf: str):
     cpf = format_cpf(cpf)
     result = query_db('SELECT * FROM people WHERE cpf=?', (cpf,))

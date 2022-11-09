@@ -2,7 +2,7 @@ import tkinter
 from tkinter import ttk
 from tkinter.ttk import Scrollbar
 
-from src.database import get_pessoas
+from src.database import get_pessoas, get_contas, get_funcionarios
 
 LARGEFONT = ("Verdana", 35)
 
@@ -20,7 +20,7 @@ class TkinterApp(tkinter.Tk):
 
         self.frames = {}
 
-        for f in (StartPage, Page1, Page2):
+        for f in (StartPage, Page1, Page2, Page3):
             frame = f(container, self)
             self.frames[f] = frame
             frame.grid(row=0, column=0, sticky="nsew")
@@ -32,8 +32,27 @@ class TkinterApp(tkinter.Tk):
         frame.tkraise()
 
 
-class Page3:
-    pass
+class Page3(tkinter.Frame):
+    def __init__(self, parent, controller):
+        tkinter.Frame.__init__(self, parent)
+
+        label = ttk.Label(self, text="Lista de Funcionários", font=LARGEFONT)
+        label.grid(row=1, column=1, padx=10, pady=10)
+
+        employee = get_funcionarios()
+        scrollbar = Scrollbar(self)
+        scrollbar.grid(row=2, column=1, padx=10, pady=10)
+
+        mylist = tkinter.Listbox(self, yscrollcommand=scrollbar.set, width=100)
+        for line in employee:
+            mylist.insert(line[0],
+                          f'{line[1]} | {str(line[2])} | {str(line[4])} | Pessoa: {str(line[3])}')
+
+        mylist.grid(row=2, column=1, padx=50, pady=50)
+        scrollbar.config(command=mylist.yview)
+
+        button1 = ttk.Button(self, text="Voltar", command=lambda: controller.show_frame(StartPage))
+        button1.grid(row=3, column=1, padx=10, pady=10)
 
 
 class Page4:
@@ -143,36 +162,44 @@ class Page1(tkinter.Frame):
         tkinter.Frame.__init__(self, parent)
 
         label = ttk.Label(self, text="Lista de pessoas", font=LARGEFONT)
-        label.grid(row=0, column=1, padx=10, pady=10)
+        label.grid(row=1, column=1, padx=10, pady=10)
         
         pessoas = get_pessoas()
-        root = tkinter.Tk()
-        scrollbar = Scrollbar()
-        scrollbar.pack(side="right", fill='y')
+        scrollbar = Scrollbar(self)
+        scrollbar.grid(row=2, column=1, padx=10, pady=10)
 
-        mylist = tkinter.Listbox(root, yscrollcommand=scrollbar.set)
+        mylist = tkinter.Listbox(self, yscrollcommand=scrollbar.set, width=100)
         for line in pessoas:
-            mylist.insert(line[0], line[1])
+            mylist.insert(line[0], line[2] + " | " + line[3] + " | " + line[4])
 
-        mylist.pack(side='left', fill="both")
+        mylist.grid(row=2, column=1, padx=50, pady=50)
         scrollbar.config(command=mylist.yview)
 
         button1 = ttk.Button(self, text="Voltar", command=lambda: controller.show_frame(StartPage))
-        button1.grid(row=1, column=1, padx=10, pady=10)
+        button1.grid(row=3, column=1, padx=10, pady=10)
 
 
 class Page2(tkinter.Frame):
     def __init__(self, parent, controller):
         tkinter.Frame.__init__(self, parent)
 
-        label = ttk.Label(self, text="Page 2", font=LARGEFONT)
-        label.grid(row=0, column=4, padx=10, pady=10)
+        label = ttk.Label(self, text="Lista de Contas", font=LARGEFONT)
+        label.grid(row=1, column=1, padx=10, pady=10)
 
-        button1 = ttk.Button(self, text="Page 1", command=lambda: controller.show_frame(Page1))
-        button1.grid(row=1, column=1, padx=10, pady=10)
+        contas = get_contas()
+        scrollbar = Scrollbar(self)
+        scrollbar.grid(row=2, column=1, padx=10, pady=10)
 
-        button2 = ttk.Button(self, text="Startpage", command=lambda: controller.show_frame(StartPage))
-        button2.grid(row=2, column=1, padx=10, pady=10)
+        mylist = tkinter.Listbox(self, yscrollcommand=scrollbar.set, width=100)
+        for line in contas:
+            mylist.insert(line[0],
+                          f'{line[1]} | {line[2]} | {str(line[3])} | {str(line[4])} | Dono da conta: {str(line[5])}')
+
+        mylist.grid(row=2, column=1, padx=50, pady=50)
+        scrollbar.config(command=mylist.yview)
+
+        button1 = ttk.Button(self, text="Voltar", command=lambda: controller.show_frame(StartPage))
+        button1.grid(row=3, column=1, padx=10, pady=10)
 
 
 app = TkinterApp()
