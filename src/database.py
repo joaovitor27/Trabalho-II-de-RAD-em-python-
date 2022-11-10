@@ -1,3 +1,4 @@
+import datetime
 import os
 import sqlite3
 
@@ -81,10 +82,18 @@ def insert_conta(agency: str, number_conta: str, saldo: float, gerente: int, tit
     return result
 
 
-def insert_pessoa(cpf: str, first_name: str, middle_name: str, last_name: str, age: int, conta: int):
-    cpf = format_cpf(cpf)
-    result = insert_db('INSERT INTO people(cpf, first_name, middle_name, last_name, age, conta) values (?,?,?,?,?,?);',
-                       (cpf, first_name, middle_name, last_name, age, conta))
+def insert_pessoa(cpf: str, first_name: str, middle_name: str, last_name: str, age: int, email: str = None):
+    result = insert_db(
+        'INSERT INTO people(cpf, first_name, middle_name, last_name, age, email) values (?,?,?,?,?,?);',
+        (cpf, first_name, middle_name, last_name, age, email)
+    )
+    return result
+
+
+def insert_employee(office: str, wage: float, employee: int):
+    contract_date = datetime.datetime.now()
+    result = insert_db('INSERT INTO employee(office, wage, employee, contract_date) values (?,?,?,?);',
+                       (office, wage, employee, contract_date))
     return result
 
 
@@ -239,9 +248,8 @@ def inserindo_dados_no_banco(path: str):
         linhas = arquivo.readlines()
         for linha in linhas:
             dados = linha.split(',')
-            cpf, first_name, middle_name, last_name, age, conta = dados[0], dados[1], dados[2], dados[3], dados[4],\
-                                                                  dados[5]
-            insert_pessoa(cpf, first_name, middle_name, last_name, int(age), int(conta))
+            cpf, first_name, middle_name, last_name, age = dados[0], dados[1], dados[2], dados[3], dados[4]
+            insert_pessoa(cpf, first_name, middle_name, last_name, int(age))
 
     elif path == './dados/contas.txt':
         arquivo = open(path, 'r')
