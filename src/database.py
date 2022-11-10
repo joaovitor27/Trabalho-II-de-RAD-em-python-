@@ -103,14 +103,18 @@ def format_cpf(cpf: str):
     return cpf
 
 
-def delete_conta(number_conta: int):
+def delete_conta(number_conta: str):
     result = delete_db('DELETE FROM conta WHERE number_conta=?', (number_conta,))
     return result
 
 
 def delete_pessoa(cpf: str):
-    cpf = format_cpf(cpf)
     result = delete_db('DELETE FROM people WHERE cpf=?', (cpf,))
+    return result
+
+
+def delete_employee(id_employee: int):
+    result = delete_db('DELETE FROM employee WHERE id_employee=?', (id_employee,))
     return result
 
 

@@ -3,9 +3,9 @@ from tkinter import ttk, messagebox
 from tkinter.ttk import Scrollbar
 
 from src.database import get_pessoas, get_contas, get_funcionarios, get_pessoa, get_conta, get_employee, \
-    insert_pessoa, insert_conta, insert_employee
+    insert_pessoa, insert_conta, insert_employee, delete_pessoa, delete_conta, delete_employee
 
-LARGEFONT = ("Verdana", 35)
+LARGEFONT = ("Verdana", 20)
 
 
 class TkinterApp(tkinter.Tk):
@@ -21,7 +21,7 @@ class TkinterApp(tkinter.Tk):
 
         self.frames = {}
 
-        for f in (StartPage, Page1, Page2, Page3, Page4, Page5, Page6, Page7, Page8, Page9):
+        for f in (StartPage, Page1, Page2, Page3, Page4, Page5, Page6, Page7, Page8, Page9, Page10, Page11, Page12):
             frame = f(container, self)
             self.frames[f] = frame
             frame.grid(row=0, column=0, sticky="nsew")
@@ -31,30 +31,6 @@ class TkinterApp(tkinter.Tk):
     def show_frame(self, cont):
         frame = self.frames[cont]
         frame.tkraise()
-
-
-class Page10:
-    pass
-
-
-class Page11:
-    pass
-
-
-class Page12:
-    pass
-
-
-class Page13:
-    pass
-
-
-class Page14:
-    pass
-
-
-class Page15:
-    pass
 
 
 class StartPage(tkinter.Frame):
@@ -423,6 +399,87 @@ class Page9(tkinter.Frame):
         resut = insert_employee(self.entrada_office.get(), wage, int(self.entrada_id_pessoa.get()))
 
         messagebox.showinfo('Resultado da Busca: ', f'{resut}')
+
+
+class Page10(tkinter.Frame):
+    def __init__(self, parent, controller):
+        tkinter.Frame.__init__(self, parent)
+
+        label = ttk.Label(self, text="Deletar Pessoa", font=LARGEFONT)
+        label.grid(row=0, column=1, padx=10, pady=10)
+
+        self.label = tkinter.Label(self, text='Digite o CPF da Pessoa: (sem formatação)')
+        self.entrada = tkinter.Entry(self, width=30)
+
+        self.label.grid(row=1, column=2, padx=10, pady=10)
+        self.entrada.grid(row=1, column=3, padx=10, pady=10)
+
+        self.botao = tkinter.Button(self, text='Deletar', command=self.delete)
+        self.botao_sair = tkinter.Button(self, text='Voltar', command=lambda: controller.show_frame(StartPage))
+
+        self.botao.grid(row=2, column=2, padx=10, pady=10)
+        self.botao_sair.grid(row=2, column=3, padx=10, pady=10)
+
+    def delete(self):
+        messagebox.showinfo('Resultado da Busca: ', str(delete_pessoa(self.entrada.get())))
+
+
+class Page11(tkinter.Frame):
+    def __init__(self, parent, controller):
+        tkinter.Frame.__init__(self, parent)
+
+        label = ttk.Label(self, text="Deletar Conta", font=LARGEFONT)
+        label.grid(row=0, column=1, padx=10, pady=10)
+
+        self.label = tkinter.Label(self, text='Digite o número da conta: (00000-0)')
+        self.entrada = tkinter.Entry(self, width=30)
+
+        self.label.grid(row=1, column=2, padx=10, pady=10)
+        self.entrada.grid(row=1, column=3, padx=10, pady=10)
+
+        self.botao = tkinter.Button(self, text='Deletar', command=self.delete)
+        self.botao_sair = tkinter.Button(self, text='Voltar', command=lambda: controller.show_frame(StartPage))
+
+        self.botao.grid(row=2, column=2, padx=10, pady=10)
+        self.botao_sair.grid(row=2, column=3, padx=10, pady=10)
+
+    def delete(self):
+        messagebox.showinfo('Resultado da Busca: ', str(delete_conta(self.entrada.get())))
+
+
+class Page12(tkinter.Frame):
+    def __init__(self, parent, controller):
+        tkinter.Frame.__init__(self, parent)
+
+        label = ttk.Label(self, text="Deletar Funcionário", font=LARGEFONT)
+        label.grid(row=0, column=1, padx=10, pady=10)
+
+        self.label = tkinter.Label(self, text='Digite o id do funcionário:')
+        self.label.grid(row=1, column=1, sticky=tkinter.W, padx=10, pady=10)
+
+        self.entrada = tkinter.Entry(self, width=30)
+        self.entrada.grid(row=2, column=1, sticky=tkinter.E, padx=10, pady=10)
+
+        self.botao = tkinter.Button(self, text='Deletar', command=self.exibe)
+        self.botao.grid(row=3, column=1, sticky=tkinter.NS, padx=10, pady=10)
+
+        self.botao_sair = tkinter.Button(self, text='Voltar', command=lambda: controller.show_frame(StartPage))
+        self.botao_sair.grid(row=3, column=1, sticky=tkinter.E, padx=10, pady=10)
+
+    def exibe(self):
+        messagebox.showinfo('Resultado da Busca: ', str(delete_employee(int(self.entrada.get()))))
+
+
+class Page13:
+    pass
+
+
+class Page14:
+    pass
+
+
+class Page15:
+    pass
 
 
 app = TkinterApp()
