@@ -132,6 +132,21 @@ class Page1(tkinter.Frame):
         button1 = ttk.Button(self, text="Voltar", command=lambda: controller.show_frame(StartPage))
         button1.grid(row=3, column=1, padx=10, pady=10)
 
+        button2 = ttk.Button(self, text="Atualizar", command=self.atualizar)
+        button2.grid(row=3, column=2, padx=10, pady=10)
+
+    def atualizar(self):
+        pessoas = get_pessoas()
+        scrollbar = Scrollbar(self)
+        scrollbar.grid(row=2, column=1, padx=10, pady=10)
+
+        mylist = tkinter.Listbox(self, yscrollcommand=scrollbar.set, width=100)
+        for line in pessoas:
+            mylist.insert(line[0], line[1] + " | " + line[2] + " | " + line[3] + " | " + line[4])
+
+        mylist.grid(row=2, column=1, padx=50, pady=50)
+        scrollbar.config(command=mylist.yview)
+
 
 class Page2(tkinter.Frame):
     def __init__(self, parent, controller):
@@ -155,6 +170,22 @@ class Page2(tkinter.Frame):
         button1 = ttk.Button(self, text="Voltar", command=lambda: controller.show_frame(StartPage))
         button1.grid(row=3, column=1, padx=10, pady=10)
 
+        button2 = ttk.Button(self, text="Atualizar", command=self.atualizar)
+        button2.grid(row=3, column=2, padx=10, pady=10)
+
+    def atualizar(self):
+        contas = get_contas()
+        scrollbar = Scrollbar(self)
+        scrollbar.grid(row=2, column=1, padx=10, pady=10)
+
+        mylist = tkinter.Listbox(self, yscrollcommand=scrollbar.set, width=100)
+        for line in contas:
+            mylist.insert(line[0],
+                          f'{line[1]} | {line[2]} | {str(line[3])} | {str(line[4])} | Dono da conta: {str(line[5])}')
+
+        mylist.grid(row=2, column=1, padx=50, pady=50)
+        scrollbar.config(command=mylist.yview)
+
 
 class Page3(tkinter.Frame):
     def __init__(self, parent, controller):
@@ -177,6 +208,22 @@ class Page3(tkinter.Frame):
 
         button1 = ttk.Button(self, text="Voltar", command=lambda: controller.show_frame(StartPage))
         button1.grid(row=3, column=1, padx=10, pady=10)
+
+        button2 = ttk.Button(self, text="Atualizar", command=self.atualizar)
+        button2.grid(row=3, column=2, padx=10, pady=10)
+
+    def atualizar(self):
+        employee = get_funcionarios()
+        scrollbar = Scrollbar(self)
+        scrollbar.grid(row=2, column=1, padx=10, pady=10)
+
+        mylist = tkinter.Listbox(self, yscrollcommand=scrollbar.set, width=100)
+        for line in employee:
+            mylist.insert(line[0],
+                          f'{line[1]} | {str(line[2])} | {str(line[4])} | Funcionário: {str(line[3])}')
+
+        mylist.grid(row=2, column=1, padx=50, pady=50)
+        scrollbar.config(command=mylist.yview)
 
 
 class Page4(tkinter.Frame):
