@@ -134,12 +134,14 @@ def get_funcionarios():
 
 
 def get_pessoa(cpf: str):
-    cpf = format_cpf(cpf)
     result = query_db('SELECT * FROM people WHERE cpf=?', (cpf,))
     try:
         os.mkdir('./Busca de pessoa')
     except OSError:
         print("Pasta já existe")
+    if len(result) == 0:
+        return "Pessoa não encontrada"
+
     result = result[0]
     arquivo = open("./Busca de pessoa/pessoa_results.txt", 'a')
     arquivo.write(f'================================================================================================\n'
@@ -150,12 +152,16 @@ def get_pessoa(cpf: str):
     return result
 
 
-def get_conta(number_conta: int):
+def get_conta(number_conta: str):
     result = query_db('SELECT * FROM conta WHERE number_conta=?', (number_conta,))
     try:
         os.mkdir('./Busca de conta')
     except OSError:
         print("Pasta já existe")
+
+    if len(result) == 0:
+        return "Pessoa não encontrada"
+
     result = result[0]
     arquivo = open("./Busca de conta/conta_results.txt", 'a')
     arquivo.write(f'================================================================================================\n'
@@ -163,6 +169,28 @@ def get_conta(number_conta: int):
                   f'Gerente: {result[4]}\nTitular: {result[5]}\n'
                   f'================================================================================================\n')
     arquivo.close()
+
+    return result
+
+
+def get_employee(id_employee: int):
+    result = query_db('SELECT * FROM employee WHERE id_employee=?', (id_employee,))
+    try:
+        os.mkdir('./Busca de Funcionários')
+    except OSError:
+        print("Pasta já existe")
+
+    if len(result) == 0:
+        return "Pessoa não encontrada"
+
+    result = result[0]
+    with open("./Busca de Funcionários/Funcionários_results.txt", 'a') as arquivo:
+        arquivo.write(
+            f'================================================================================================\n'
+            f'Id_Funcionários: {result[0]}\nFunção: {result[1]}\n Salário: {result[2]}\nid_pessoa: {result[3]}\n'
+            f'Data de Contração: {result[4]}'
+            f'================================================================================================\n'
+        )
 
     return result
 
