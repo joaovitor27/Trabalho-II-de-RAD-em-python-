@@ -3,7 +3,8 @@ from tkinter import ttk, messagebox
 from tkinter.ttk import Scrollbar
 
 from src.database import get_pessoas, get_contas, get_funcionarios, get_pessoa, get_conta, get_employee, \
-    insert_pessoa, insert_conta, insert_employee, delete_pessoa, delete_conta, delete_employee
+    insert_pessoa, insert_conta, insert_employee, delete_pessoa, delete_conta, delete_employee, put_pessoa, put_conta, \
+    put_employee
 
 LARGEFONT = ("Verdana", 20)
 
@@ -21,7 +22,8 @@ class TkinterApp(tkinter.Tk):
 
         self.frames = {}
 
-        for f in (StartPage, Page1, Page2, Page3, Page4, Page5, Page6, Page7, Page8, Page9, Page10, Page11, Page12):
+        for f in (StartPage, Page1, Page2, Page3, Page4, Page5, Page6, Page7, Page8, Page9, Page10, Page11, Page12,
+                  Page13, Page14, Page15):
             frame = f(container, self)
             self.frames[f] = frame
             frame.grid(row=0, column=0, sticky="nsew")
@@ -93,7 +95,7 @@ class Page1(tkinter.Frame):
 
         label = ttk.Label(self, text="Lista de pessoas", font=LARGEFONT)
         label.grid(row=1, column=1, padx=10, pady=10)
-        
+
         pessoas = get_pessoas()
         scrollbar = Scrollbar(self)
         scrollbar.grid(row=2, column=1, padx=10, pady=10)
@@ -470,16 +472,181 @@ class Page12(tkinter.Frame):
         messagebox.showinfo('Resultado da Busca: ', str(delete_employee(int(self.entrada.get()))))
 
 
-class Page13:
-    pass
+class Page13(tkinter.Frame):
+    def __init__(self, parent, controller):
+        tkinter.Frame.__init__(self, parent)
+
+        label = ttk.Label(self, text="Editar Pessoa", font=LARGEFONT)
+        label.grid(row=0, column=1, padx=10, pady=10)
+
+        self.label_cpf = tkinter.Label(self, text='Digite o CPF:')
+        self.label_cpf.grid(row=1, column=1, padx=10, pady=10)
+
+        self.entrada_cpf = tkinter.Entry(self, width=30)
+        self.entrada_cpf.grid(row=1, column=2, padx=10, pady=10)
+
+        self.botao_get = tkinter.Button(self, text='Buscar Pessoa', command=self.get)
+        self.botao_get.grid(row=1, column=3, padx=10, pady=10)
+
+        self.label_first_name = tkinter.Label(self, text='Digite o primeiro Nome:')
+        self.label_first_name.grid(row=2, column=1, padx=10, pady=10)
+
+        self.entrada_first_name = tkinter.Entry(self, width=30)
+        self.entrada_first_name.grid(row=2, column=2, padx=10, pady=10)
+
+        self.label_middle_name = tkinter.Label(self, text='Digite o nome do meio:')
+        self.label_middle_name.grid(row=3, column=1, padx=10, pady=10)
+
+        self.entrada_middle_name = tkinter.Entry(self, width=30)
+        self.entrada_middle_name.grid(row=3, column=2, padx=10, pady=10)
+
+        self.label_last_name = tkinter.Label(self, text='Digite o último nome:')
+        self.label_last_name.grid(row=4, column=1, padx=10, pady=10)
+
+        self.entrada_last_name = tkinter.Entry(self, width=30)
+        self.entrada_last_name.grid(row=4, column=2, padx=10, pady=10)
+
+        self.label_age = tkinter.Label(self, text='Digite a idade:')
+        self.label_age.grid(row=5, column=1, padx=10, pady=10)
+
+        self.entrada_age = tkinter.Entry(self, width=30)
+        self.entrada_age.grid(row=5, column=2, padx=10, pady=10)
+
+        self.label_email = tkinter.Label(self, text='Digite o email:')
+        self.label_email.grid(row=7, column=1, padx=10, pady=10)
+
+        self.entrada_email = tkinter.Entry(self, width=30)
+        self.entrada_email.grid(row=7, column=2, padx=10, pady=10)
+
+        self.botao = tkinter.Button(self, text='Enserir', command=self.put)
+        self.botao.grid(row=8, column=3, padx=10, pady=10)
+
+        self.botao_sair = tkinter.Button(self, text='voltar', command=lambda: controller.show_frame(StartPage))
+        self.botao_sair.grid(row=8, column=4, padx=10, pady=10)
+
+    def get(self):
+        result = get_pessoa(self.entrada_cpf.get())
+        self.entrada_first_name.insert(result[0], result[2])
+        self.entrada_middle_name.insert(result[0], result[3])
+        self.entrada_last_name.insert(result[0], result[4])
+        self.entrada_age.insert(result[0], result[5])
+        self.entrada_email.insert(result[0], result[7])
+
+    def put(self):
+        result = put_pessoa(self.entrada_cpf.get(), self.entrada_first_name.get(), self.entrada_middle_name.get(),
+                            self.entrada_last_name.get(), int(self.entrada_age.get()), self.entrada_email.get())
+
+        messagebox.showinfo('Result: ', f'{result}')
 
 
-class Page14:
-    pass
+class Page14(tkinter.Frame):
+    def __init__(self, parent, controller):
+        tkinter.Frame.__init__(self, parent)
+
+        label = ttk.Label(self, text="Editar Conta", font=LARGEFONT)
+        label.grid(row=0, column=1, padx=10, pady=10)
+
+        self.label_number_conta = tkinter.Label(self, text='Digite o número da conta: (00000-0)')
+        self.label_number_conta.grid(row=1, column=1, padx=10, pady=10)
+
+        self.entrada_number_conta = tkinter.Entry(self, width=30)
+        self.entrada_number_conta.grid(row=1, column=2, padx=10, pady=10)
+
+        self.botao_get = tkinter.Button(self, text='Buscar Conta', command=self.get)
+        self.botao_get.grid(row=1, column=3, padx=10, pady=10)
+
+        self.label_agency = tkinter.Label(self, text='Digite a Agência: (0000-0)')
+        self.label_agency.grid(row=2, column=1, padx=10, pady=10)
+
+        self.entrada_agency = tkinter.Entry(self, width=30)
+        self.entrada_agency.grid(row=2, column=2, padx=10, pady=10)
+
+        self.label_saldo = tkinter.Label(self, text='Digite o Saldo da conta')
+        self.label_saldo.grid(row=3, column=1, padx=10, pady=10)
+
+        self.entrada_saldo = tkinter.Entry(self, width=30)
+        self.entrada_saldo.grid(row=3, column=2, padx=10, pady=10)
+
+        self.label_id_gerente = tkinter.Label(self, text='Digite o id do gerente')
+        self.label_id_gerente.grid(row=4, column=1, padx=10, pady=10)
+
+        self.entrada_id_gerente = tkinter.Entry(self, width=30)
+        self.entrada_id_gerente.grid(row=4, column=2, padx=10, pady=10)
+
+        self.label_id_pessoa = tkinter.Label(self, text='Digite o id da pessoa')
+        self.label_id_pessoa.grid(row=5, column=1, padx=10, pady=10)
+
+        self.entrada_id_pessoa = tkinter.Entry(self, width=30)
+        self.entrada_id_pessoa.grid(row=5, column=2, padx=10, pady=10)
+
+        self.botao = tkinter.Button(self, text='Editar', command=self.put)
+        self.botao_sair = tkinter.Button(self, text='voltar', command=lambda: controller.show_frame(StartPage))
+
+        self.botao.grid(row=6, column=3, padx=10, pady=10)
+        self.botao_sair.grid(row=6, column=4, padx=10, pady=10)
+
+    def get(self):
+        result = get_conta(self.entrada_number_conta.get())
+        self.entrada_agency.insert(result[0], result[1])
+        self.entrada_saldo.insert(result[0], result[3])
+        self.entrada_id_gerente.insert(result[0], result[4])
+        self.entrada_id_pessoa.insert(result[0], result[5])
+
+    def put(self):
+        saldo = self.entrada_saldo.get()
+        if ',' in saldo:
+            saldo = saldo.replace(',', '.')
+        saldo = float(saldo)
+        result = put_conta(self.entrada_number_conta.get(), saldo, self.entrada_agency.get(),
+                           int(self.entrada_id_gerente.get()), int(self.entrada_id_pessoa.get()))
+
+        messagebox.showinfo('Result: ', f'{result}')
 
 
-class Page15:
-    pass
+class Page15(tkinter.Frame):
+    def __init__(self, parent, controller):
+        tkinter.Frame.__init__(self, parent)
+
+        label = ttk.Label(self, text="Editar Funcionários", font=LARGEFONT)
+        label.grid(row=0, column=1, padx=10, pady=10)
+
+        self.label_id_funcionario = tkinter.Label(self, text='Digite o id da pessoa')
+        self.label_id_funcionario.grid(row=1, column=1, padx=10, pady=10)
+
+        self.entrada_id_funcionario = tkinter.Entry(self, width=30)
+        self.entrada_id_funcionario.grid(row=1, column=2, padx=10, pady=10)
+
+        self.label_office = tkinter.Label(self, text='Digite o cargo:')
+        self.label_office.grid(row=2, column=1, padx=10, pady=10)
+
+        self.entrada_office = tkinter.Entry(self, width=30)
+        self.entrada_office.grid(row=2, column=2, padx=10, pady=10)
+
+        self.label_wage = tkinter.Label(self, text='Digite o salário')
+        self.label_wage.grid(row=3, column=1, padx=10, pady=10)
+
+        self.entrada_wage = tkinter.Entry(self, width=30)
+        self.entrada_wage.grid(row=3, column=2, padx=10, pady=10)
+
+        self.botao = tkinter.Button(self, text='Editar', command=self.put)
+        self.botao_sair = tkinter.Button(self, text='voltar', command=lambda: controller.show_frame(StartPage))
+
+        self.botao.grid(row=4, column=3, padx=10, pady=10)
+        self.botao_sair.grid(row=4, column=4, padx=10, pady=10)
+
+    def get(self):
+        result = get_employee(int(self.entrada_id_funcionario.get()))
+        self.entrada_office.insert(result[0], result[1])
+        self.entrada_wage.insert(result[0], result[2])
+
+    def put(self):
+        saldo = self.entrada_wage.get()
+        if ',' in saldo:
+            saldo = saldo.replace(',', '.')
+        saldo = float(saldo)
+        result = put_employee(int(self.entrada_id_funcionario.get()), self.entrada_office.get(), saldo)
+
+        messagebox.showinfo('Result: ', f'{result}')
 
 
 app = TkinterApp()

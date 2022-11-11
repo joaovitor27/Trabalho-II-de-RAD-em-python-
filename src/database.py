@@ -118,16 +118,21 @@ def delete_employee(id_employee: int):
     return result
 
 
-def put_conta(number_conta: int, saldo: float, agency: int, gerente: str, titular: str):
+def put_conta(number_conta: str, saldo: float, agency: str, gerente: int, titular: int):
     result = put_db('UPDATE conta SET saldo = ?, agency = ?, gerente = ?, titular = ? WHERE number_conta=?',
                     (saldo, agency, gerente, titular, number_conta))
     return result
 
 
-def put_pessoa(cpf: str, first_name: str, middle_name: str, last_name: str, age: int, conta: int):
-    cpf = format_cpf(cpf)
-    result = put_db('UPDATE people SET first_name=?, middle_name=?, last_name=?, age=?, conta=? WHERE cpf=?',
-                    (first_name, middle_name, last_name, age, conta, cpf))
+def put_pessoa(cpf: str, first_name: str, middle_name: str, last_name: str, age: int, email: str):
+    result = put_db('UPDATE people SET first_name=?, middle_name=?, last_name=?, age=?, email=? WHERE cpf=?',
+                    (first_name, middle_name, last_name, age, email, cpf))
+    return result
+
+
+def put_employee(id_employee: int, office: str, wage: float):
+    result = put_db('UPDATE employee SET office=?, wage=? WHERE id_employee=?',
+                    (office, wage, id_employee))
     return result
 
 
